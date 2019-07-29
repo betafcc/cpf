@@ -1,0 +1,31 @@
+{
+  "name": "@betafcc/cpf",
+  "version": "0.1.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "clean": "rimraf lib",
+    "prebuild": "npm run clean",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/betafcc/cpf.git"
+  },
+  "keywords": [
+    "cpf"
+  ],
+  "author": "Beta Faccion <betafcc@gmail.com> (https://github.com/betafcc)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/betafcc/cpf/issues"
+  },
+  "homepage": "https://github.com/betafcc/cpf#readme",
+  "devDependencies": {
+    "rimraf": "^2.6.3",
+    "tslint": "^5.18.0",
+    "tslint-config-standard": "^8.0.1",
+    "typescript": "^3.5.3"
+  }
+}
