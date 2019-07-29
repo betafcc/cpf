@@ -23,3 +23,21 @@ describe(Cpf.from, () => {
     ).toBe(true)
   })
 })
+
+describe(Cpf.random, () => {
+  test('Gera cpf válido', () => expect(Cpf.isValid(Cpf.random().format())).toBe(true))
+
+  test('Gera cpf válido com Uf', () =>
+    expect(Cpf.random('RJ').format()[10]).toBe(Cpf.ufs['RJ']))
+})
+
+describe(Cpf, () => {
+  test('strip', () => expect(Cpf.from('453.178.287-91').strip()).toBe('45317828791'))
+  test('format', () => expect(Cpf.from('45317828791').format()).toBe('453.178.287-91'))
+  test('equals', () => {
+    const formatted = Cpf.from('453.178.287-91')
+    const stripped = Cpf.from('45317828791')
+
+    expect(formatted.equals(stripped)).toBe(true)
+  })
+})

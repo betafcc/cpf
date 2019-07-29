@@ -3,33 +3,33 @@ type Brand<K, T> = K & { __brand: T }
 type CpfString = Brand<string, 'CpfString'>
 
 const ufs = {
-  AC: 2,
-  AL: 4,
-  AP: 2,
-  AM: 2,
-  BA: 5,
-  CE: 3,
-  DF: 1,
-  ES: 7,
-  GO: 1,
-  MA: 3,
-  MT: 0,
-  MS: 1,
-  MG: 6,
-  PA: 2,
-  PB: 4,
-  PR: 9,
-  PE: 4,
-  PI: 3,
-  RJ: 7,
-  RN: 4,
-  RS: 0,
-  RO: 2,
-  RR: 2,
-  SC: 9,
-  SP: 8,
-  SE: 5,
-  TO: 1
+  AC: '2',
+  AL: '4',
+  AP: '2',
+  AM: '2',
+  BA: '5',
+  CE: '3',
+  DF: '1',
+  ES: '7',
+  GO: '1',
+  MA: '3',
+  MT: '0',
+  MS: '1',
+  MG: '6',
+  PA: '2',
+  PB: '4',
+  PR: '9',
+  PE: '4',
+  PI: '3',
+  RJ: '7',
+  RN: '4',
+  RS: '0',
+  RO: '2',
+  RR: '2',
+  SC: '9',
+  SP: '8',
+  SE: '5',
+  TO: '1'
 } as const
 
 type Uf = keyof typeof ufs
@@ -59,6 +59,13 @@ const isValidStripped = (stripped: string): stripped is CpfString =>
 
 const format = (s: string): CpfString =>
   `${s.slice(0, 3)}.${s.slice(3, 6)}.${s.slice(6, 9)}-${s.slice(9, 11)}` as CpfString
+
+/**
+ * Random int in [0, max] (inclusive)
+ */
+const randInt = (max: number): number => Math.floor(Math.random() * (max + 1))
+
+const choose = <T>(arr: T[]): T => arr[randInt(arr.length - 1)]
 
 export default class Cpf {
   /**
@@ -111,7 +118,7 @@ export default class Cpf {
    */
   static from(cpf: string, uf?: Uf): Cpf {
     if (typeof cpf !== 'string') throw TypeError(`first argument must be string`)
-    if (uf !== undefined && !Ufs.hasOwnProperty(uf)) {
+    if (uf !== undefined && !ufs.hasOwnProperty(uf)) {
       throw RangeError(`Invalid uf ${uf}`)
     }
 
@@ -145,7 +152,12 @@ export default class Cpf {
    *
    * @param [uf]
    */
-  static random(uf?: Uf): Cpf {}
+  static random(uf?: Uf): Cpf {
+    return Cpf.from(
+      Array.from(Array(8), () => randInt(9)).join(''),
+      uf || (choose(Object.keys(ufs)) as Uf)
+    )
+  }
 
   private constructor(private readonly __cpf: CpfString) {}
 
@@ -158,14 +170,18 @@ export default class Cpf {
    * Cpf.from('453.178.287-91').strip() // '45317828791'
    * ```
    */
-  strip(): CpfString {}
+  strip(): CpfString {
+    return strip(this.format()) as CpfString
+  }
 
   /**
    * ```ts
    * Cpf.from('45317828791').format() // '453.178.287-91'
    * ```
    */
-  format(): CpfString {}
+  format(): CpfString {
+    return this.__cpf
+  }
 
   /**
    * Retorna as possíveis UFs de origem
@@ -175,5 +191,12 @@ export default class Cpf {
    * Cpf.from('453.178.287-91').possibleUfs() // Set {"RJ", "ES"}
    * ```
    */
-  possibleUfs(): Set<Uf> {}
+  possibleUfs(): Set<Uf> {
+    const ufDigit = this.__cpf[10]
+
+    return Object.entries(ufs).reduce(
+      (acc, [uf, n]) => (n === ufDigit ? acc.add(uf as Uf) : acc),
+      new Set<Uf>()
+    )
+  }
 }
