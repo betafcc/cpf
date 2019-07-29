@@ -1,7 +1,7 @@
 {
   "name": "@betafcc/cpf",
   "version": "0.1.0",
-  "description": "",
+  "description": "Micro-utilitário para validação e geração de CPFs",
   "main": "lib/index.js",
   "scripts": {
     "clean": "rimraf lib",
