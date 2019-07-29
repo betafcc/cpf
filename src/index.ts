@@ -1,8 +1,8 @@
 type Brand<K, T> = K & { __brand: T }
 
-type CpfString = Brand<string, 'CpfString'>
+export type CpfString = Brand<string, 'CpfString'>
 
-const ufs = {
+export const ufs = {
   AC: '2',
   AL: '4',
   AP: '2',
@@ -32,7 +32,7 @@ const ufs = {
   TO: '1'
 } as const
 
-type Uf = keyof typeof ufs
+export type Uf = keyof typeof ufs
 
 const checkDigit = (numbers: string): number => {
   const n =
@@ -67,7 +67,7 @@ const randInt = (max: number): number => Math.floor(Math.random() * (max + 1))
 
 const choose = <T>(arr: T[]): T => arr[randInt(arr.length - 1)]
 
-export default class Cpf {
+export class Cpf {
   /**
    * Relação do dígito que representa a Uf de origem
    * @see https://janio.sarmento.org/curiosidade-identificacao-de-cpf-conforme-o-estado/

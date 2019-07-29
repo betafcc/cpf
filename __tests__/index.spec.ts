@@ -1,4 +1,4 @@
-import Cpf from '../src'
+import { Cpf } from '../src'
 
 describe(Cpf.isValid, () => {
   test('Com pontuação', () => expect(Cpf.isValid('453.178.287-91')).toBe(true))
