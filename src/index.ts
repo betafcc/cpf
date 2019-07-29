@@ -57,6 +57,9 @@ const isValidStripped = (stripped: string): stripped is CpfString =>
   !!stripped.match(/^\d{11}$/) &&
   stripped.slice(-2) === checkDigits(stripped.slice(0, -2))
 
+const format = (s: string): CpfString =>
+  `${s.slice(0, 3)}.${s.slice(3, 6)}.${s.slice(6, 9)}-${s.slice(9, 11)}` as CpfString
+
 export default class Cpf {
   /**
    * Relação do dígito que representa a Uf de origem
@@ -106,7 +109,31 @@ export default class Cpf {
    * @param cpf
    * @param [uf]
    */
-  static from(cpf: string, uf?: Uf): Cpf {}
+  static from(cpf: string, uf?: Uf): Cpf {
+    if (typeof cpf !== 'string') throw TypeError(`first argument must be string`)
+    if (uf !== undefined && !Ufs.hasOwnProperty(uf)) {
+      throw RangeError(`Invalid uf ${uf}`)
+    }
+
+    let stripped = strip(cpf)
+
+    if (!stripped.match(/^\d+$/)) {
+      throw RangeError(`first argument must contain only numbers, '.' and '-'`)
+    }
+
+    if (stripped.length === 8) {
+      if (uf === undefined) {
+        throw TypeError(`Must provide an Uf if first argument has 8 digits`)
+      }
+      stripped += ufs[uf]
+    }
+    if (stripped.length === 9) stripped += checkDigits(stripped)
+    if (stripped.length === 11 && isValidStripped(stripped)) {
+      return new Cpf(format(stripped))
+    }
+
+    throw Error(`Invalid arguments`)
+  }
 
   /**
    * Gera um Cpf aleatório
@@ -121,6 +148,10 @@ export default class Cpf {
   static random(uf?: Uf): Cpf {}
 
   private constructor(private readonly __cpf: CpfString) {}
+
+  equals(other: Cpf): boolean {
+    return this.format() === other.format()
+  }
 
   /**
    * ```ts
