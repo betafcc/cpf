@@ -34,6 +34,29 @@ const ufs = {
 
 type Uf = keyof typeof ufs
 
+const checkDigit = (numbers: string): number => {
+  const n =
+    11 -
+    (Array.from(numbers)
+      .reverse()
+      .reduce((acc, n, i) => acc + Number.parseInt(n, 10) * (i + 2), 0) %
+      11)
+
+  return n > 9 ? 0 : n
+}
+
+const checkDigits = (cpfBaseStripped: string): string => {
+  const a = checkDigit(cpfBaseStripped)
+
+  return '' + a + checkDigit(cpfBaseStripped + a)
+}
+
+const strip = (cpf: string) => cpf.replace(/[.-]/g, '')
+
+const isValidStripped = (stripped: string): stripped is CpfString =>
+  !!stripped.match(/^\d{11}$/) &&
+  stripped.slice(-2) === checkDigits(stripped.slice(0, -2))
+
 export default class Cpf {
   /**
    * Relação do dígito que representa a Uf de origem
@@ -64,7 +87,10 @@ export default class Cpf {
    * @param cpf
    * @returns `true` if argument is a valid cpf
    */
-  static isValid(cpf: unknown): cpf is CpfString {}
+  static isValid(cpf: unknown): cpf is CpfString {
+    if (typeof cpf !== 'string') return false
+    else return isValidStripped(strip(cpf))
+  }
 
   /**
    * Gera um objeto Cpf

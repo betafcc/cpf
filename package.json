@@ -7,7 +7,7 @@
     "clean": "rimraf lib",
     "prebuild": "npm run clean",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -22,8 +22,20 @@
     "url": "https://github.com/betafcc/cpf/issues"
   },
   "homepage": "https://github.com/betafcc/cpf#readme",
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "moduleFileExtensions": [
+      "js",
+      "ts"
+    ]
+  },
   "devDependencies": {
+    "@types/jest": "^24.0.15",
+    "jest": "^24.8.0",
     "rimraf": "^2.6.3",
+    "ts-jest": "^24.0.2",
     "tslint": "^5.18.0",
     "tslint-config-standard": "^8.0.1",
     "typescript": "^3.5.3"
