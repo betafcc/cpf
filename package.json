@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "Micro-utilitário para validação e geração de CPFs",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
   "scripts": {
     "clean": "rimraf lib",
     "prebuild": "npm run clean",
