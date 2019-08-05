@@ -68,6 +68,8 @@ const randInt = (max: number): number => Math.floor(Math.random() * (max + 1))
 const choose = <T>(arr: T[]): T => arr[randInt(arr.length - 1)]
 
 export class Cpf {
+  readonly _tag: 'Cpf' = 'Cpf'
+
   /**
    * Relação do dígito que representa a Uf de origem
    * @see https://janio.sarmento.org/curiosidade-identificacao-de-cpf-conforme-o-estado/

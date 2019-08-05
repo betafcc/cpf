@@ -22,6 +22,8 @@ describe(Cpf.from, () => {
         formatted.equals(withUf)
     ).toBe(true)
   })
+
+  test('Gera _tag', () => expect(Cpf.from('453.178.287-91')._tag).toBe('Cpf'))
 })
 
 describe(Cpf.random, () => {
